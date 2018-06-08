@@ -34,3 +34,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Biird_Client/.idea/
+Biird_Client/Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll
+Biird_Client/Assets/Plugins/Editor/JetBrains/

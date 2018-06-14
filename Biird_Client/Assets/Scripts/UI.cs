@@ -11,8 +11,8 @@ public class UI : MonoBehaviour
 	{
 		_biird = BiirdClient.GetBiird();
 		_biird.OnTextReceived+=OnTextReceived;
-		_biird.SelectLanguage(SupportedLanguages.English);
-		_biird.ReceiveTheText("b9fb0f44-31d5-45df-9ec3-776568802c31"); //<p>Hello World!</p>
+		_biird.SelectLanguage(SupportedLanguages.Ukrainian);
+		_biird.ReceiveTheText("f7fe003a-9ddf-4b1e-8920-79d4a57796ee"); //<p>Hello World!</p>
 	}
 
 	private void OnTextReceived(string text)

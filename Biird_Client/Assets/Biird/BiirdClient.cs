@@ -12,7 +12,7 @@ namespace Biird
 
 		private const string Url = "https://api.biird.io/resourceValue/";
 
-		private string _selectedLanguage = "en";
+		private string _selectedLanguage = "uk";
 	
 
 		#region Setup Biird
@@ -28,6 +28,7 @@ namespace Biird
 			{
 				var gameObject = new GameObject("Biird");
 				biird = gameObject.AddComponent<BiirdClient>();
+				DontDestroyOnLoad(gameObject);
 			}
 			return biird;
 		}
@@ -44,11 +45,11 @@ namespace Biird
 				case SupportedLanguages.English:
 					_selectedLanguage = "en";
 					break;
-				case SupportedLanguages.German:
-					_selectedLanguage = "de";
+				case SupportedLanguages.Ukrainian:
+					_selectedLanguage = "uk";
 					break;
-				case SupportedLanguages.Franch:
-					_selectedLanguage = "fr";
+				case SupportedLanguages.Danish:
+					_selectedLanguage = "da";
 					break;
 				default:
 					throw new ArgumentNullException();
@@ -102,7 +103,7 @@ namespace Biird
 
 	public enum SupportedLanguages : byte
 	{
-		English, German, Franch
+		English, Ukrainian, Danish
 	}
 
 	

@@ -280,6 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _testText: {fileID: 288743424}
+  _ids: {fileID: 11400000, guid: e660262068efa4646bb0e486a7539056, type: 2}
 --- !u!81 &1159280556
 AudioListener:
   m_ObjectHideFlags: 0

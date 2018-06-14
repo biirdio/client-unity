@@ -6,17 +6,18 @@ public class UI : MonoBehaviour
 {
 	private BiirdClient _biird;
 	[SerializeField] private Text _testText;
-	
+	[SerializeField] private BiirdIds _ids;
 	private void Awake()
 	{
+		BiirdClient.Init();
 		_biird = BiirdClient.GetBiird();
-		_biird.OnTextReceived+=OnTextReceived;
-		_biird.SelectLanguage(SupportedLanguages.Ukrainian);
-		_biird.ReceiveTheText("f7fe003a-9ddf-4b1e-8920-79d4a57796ee"); //<p>Hello World!</p>
+		_biird.LoadData();
+		_biird.OnBiirdInitialized+= OnBiirdInitialized;
 	}
 
-	private void OnTextReceived(string text)
+	private void OnBiirdInitialized()
 	{
-		_testText.text = text;
+		_testText.text = _biird.Items["MyAccount"];
 	}
+
 }

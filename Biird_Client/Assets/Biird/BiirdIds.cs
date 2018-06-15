@@ -20,7 +20,7 @@ namespace Biird
         {
             get { return _allIds; }
         }
-#endif
+        #endif
         public void Init()
         {
             _allObjects = Json.Deserialize(JsonFile.text) as Dictionary<string, object>;

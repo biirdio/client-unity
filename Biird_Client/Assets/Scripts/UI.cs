@@ -11,13 +11,13 @@ public class UI : MonoBehaviour
 	{
 		BiirdClient.Init();
 		_biird = BiirdClient.GetBiird();
-		_biird.LoadData();
 		_biird.OnBiirdInitialized+= OnBiirdInitialized;
+		_biird.LoadData();
 	}
 
 	private void OnBiirdInitialized()
 	{
-		_testText.text = _biird.Items["MyAccount"];
+		_testText.text = _biird.Items["Hello World"];
 	}
 
 }

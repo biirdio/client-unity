@@ -13,9 +13,10 @@ namespace Biird
 		private Dictionary<string, string> _items;
 		private BiirdDatabase _biirdDatabase;
 		private int _contentCounter;
-		
+
 		private static BiirdClient _biird;
 		private static string _selectedLanguage;
+
 #if NET_4_6
 		public Dictionary<string, string> Items => _items;
 #else
@@ -24,7 +25,6 @@ namespace Biird
 			get { return _items; }
 		}
 #endif
-
 		public delegate void BiirdInitialized();
 
 		public event BiirdInitialized OnBiirdInitialized;
@@ -58,8 +58,10 @@ namespace Biird
 			{
 				return _biird;
 			}
-			throw new Exception("Biird Client is not initialized");	
+
+			throw new Exception("Biird Client is not initialized");
 		}
+
 		#if NET_4_6
 		public static string SelectedLanguage => _selectedLanguage;
 		#else
@@ -67,7 +69,7 @@ namespace Biird
 		{
 			get { return _selectedLanguage; }
 		}
-#endif
+		#endif
 
 		/// <summary>
 		/// Start to load all needed data.
@@ -76,7 +78,6 @@ namespace Biird
 		public void LoadData()
 		{
 			//todo add version checking
-			PlayerPrefs.DeleteKey("BiirdLocalizationData");
 			if (!PlayerPrefs.HasKey("BiirdLocalizationData"))
 			{
 				_contentCounter = 0;
@@ -99,7 +100,8 @@ namespace Biird
 				}
 				else
 				{
-					throw new Exception("OnBiirdInitialized should have any subscription before call.\nUse BiirdClient.GetBiird().OnBiirdInitialized+=YOUR_FUNCTION();");
+					throw new Exception(
+						"OnBiirdInitialized should have any subscription before call.\nUse BiirdClient.GetBiird().OnBiirdInitialized+=YOUR_FUNCTION();");
 				}
 			}
 
@@ -110,15 +112,16 @@ namespace Biird
 			yield return null;
 			foreach (var keypair in _ids.AllIds)
 			{
-				ReceiveTheText(keypair,RegisterDownloadedData);
+				ReceiveTheText(keypair, RegisterDownloadedData);
 			}
-			yield return new WaitUntil(()=>_contentCounter == _ids.AllIds.Count);
-			
+
+			yield return new WaitUntil(() => _contentCounter == _ids.AllIds.Count);
+
 			SetDictionary();
 
 			string jsonData = JsonUtility.ToJson(_biirdDatabase);
 			Debug.Log(jsonData);
-			PlayerPrefs.SetString("BiirdLocalizationData",jsonData);
+			PlayerPrefs.SetString("BiirdLocalizationData", jsonData);
 			PlayerPrefs.Save();
 			if (OnBiirdInitialized != null)
 			{
@@ -126,7 +129,8 @@ namespace Biird
 			}
 			else
 			{
-				throw new Exception("OnBiirdInitialized should have any subscription before call.\nUse BiirdClient.GetBiird().OnBiirdInitialized+=YOUR_FUNCTION();");
+				throw new Exception(
+					"OnBiirdInitialized should have any subscription before call.\nUse BiirdClient.GetBiird().OnBiirdInitialized+=YOUR_FUNCTION();");
 			}
 		}
 
@@ -134,13 +138,13 @@ namespace Biird
 		{
 			foreach (var biirdItem in _biirdDatabase.BiirdItems)
 			{
-				_items.Add(biirdItem.Key,biirdItem.Value);
+				_items.Add(biirdItem.Key, biirdItem.Value);
 			}
 		}
-		
+
 		private void RegisterDownloadedData(string key, string value)
 		{
-			_biirdDatabase.BiirdItems.Add(new BiirdItem(key,value));
+			_biirdDatabase.BiirdItems.Add(new BiirdItem(key, value));
 			_contentCounter++;
 		}
 
@@ -297,14 +301,14 @@ namespace Biird
 		/// <exception cref="ArgumentNullException"> Throws when id is empty or null</exception>
 		/// <param name="pair">Keypair from ids dictionary. Contains your key as Key and biird key as Value</param>
 		/// <param name="onComplete">function that call after receiving text</param>
-		private void ReceiveTheText(KeyValuePair<string,string> pair, Action<string, string> onComplete)
+		private void ReceiveTheText(KeyValuePair<string, string> pair, Action<string, string> onComplete)
 		{
 			if (string.IsNullOrEmpty(pair.Value))
 			{
 				throw new ArgumentNullException();
 			}
 
-			StartCoroutine(GetText(pair.Key,pair.Value, onComplete));
+			StartCoroutine(GetText(pair.Key, pair.Value, onComplete));
 		}
 
 		/// <summary>
@@ -330,35 +334,36 @@ namespace Biird
 				result = request.downloadHandler.text;
 				Debug.Log("Receive: " + result);
 			}
-			#if NET_4_6
+#if NET_4_6
 			onComplete?.Invoke(idInGame, result);
-			#else
+#else
 			if (onComplete != null)
 			{
 				onComplete(idInGame, result);
 			}
-			#endif
+#endif
 		}
 
 		#endregion
 
 	}
-}
-[Serializable]
-public class BiirdDatabase
-{
-	[SerializeField]
-	public List<BiirdItem> BiirdItems;
-}
-[Serializable]
-public struct BiirdItem
-{
-	public string Key;
-	public string Value;
 
-	public BiirdItem(string key, string value)
+	[Serializable]
+	internal class BiirdDatabase
 	{
-		Key = key;
-		Value = value;
+		[SerializeField] public List<BiirdItem> BiirdItems;
+	}
+
+	[Serializable]
+	internal struct BiirdItem
+	{
+		public string Key;
+		public string Value;
+
+		public BiirdItem(string key, string value)
+		{
+			Key = key;
+			Value = value;
+		}
 	}
 }
